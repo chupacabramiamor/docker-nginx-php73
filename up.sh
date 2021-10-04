@@ -9,10 +9,11 @@ NGINX_CONF="/etc/nginx/sites-available/$CLIENT_NAME"
 
 if [ ! -f $NGINX_CONF ]; then
     sudo touch $NGINX_CONF
+    sudo ln -s "/etc/nginx/sites-available/${CLIENT_NAME}" /etc/nginx/sites-enabled/
 fi
 
-# cat docker/nginx.stub | sudo tee -a $NGINX_CONF
-# service nginx restart
+sed -e "s/\${DN}/${DN}/" -e "s/\${HTTP_PORT}/${HTTP_PORT}/" docker/nginx.conf.stub | sudo tee -a $NGINX_CONF
+service nginx restart
 
 if [[ -z $(grep "${DN}" /etc/hosts) ]]; then
     echo "127.0.0.1 ${DN}" | sudo tee -a /etc/hosts
