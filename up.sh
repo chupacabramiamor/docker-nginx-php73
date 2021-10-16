@@ -12,7 +12,7 @@ if [ ! -f $NGINX_CONF ]; then
     sudo ln -s "/etc/nginx/sites-available/${CLIENT_NAME}" /etc/nginx/sites-enabled/
 fi
 
-sed -e "s/\${DN}/${DN}/" -e "s/\${HTTP_PORT}/${HTTP_PORT}/" docker/nginx.conf.stub | sudo tee -a $NGINX_CONF
+sed -e "s/\${DN}/${DN}/" -e "s/\${DOCKER_HTTP_PORT}/${DOCKER_HTTP_PORT}/" docker/nginx.conf.stub | sudo tee -a $NGINX_CONF
 service nginx restart
 
 if [[ -z $(grep "${DN}" /etc/hosts) ]]; then
